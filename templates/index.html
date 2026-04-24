@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Magazin Online</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>🛒 Magazinul Meu</h2>
+            <div class="user-info">
+                {% if session.username %}
+                    <span>👋 Bun venit, {{ session.username }}!</span>
+                    <a href="{{ url_for('cart') }}">🛍️ Cos</a>
+                    <a href="{{ url_for('logout') }}">🚪 Iesire</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">🔑 Autentificare</a>
+                    <a href="{{ url_for('register') }}">📝 Inregistrare</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <h1 style="color: white; margin-bottom: 20px;">Produse</h1>
+        
+        <div class="products">
+            {% for product in products %}
+            <div class="product-card">
+                <h3>{{ product.name }}</h3>
+                <div class="description">{{ product.description }}</div>
+                <div class="price">💰 {{ product.price }} lei</div>
+                <div class="stock {% if product.quantity == 0 %}out{% endif %}">
+                    📦 Stoc: {{ product.quantity }}
+                </div>
+                {% if session.username and product.quantity > 0 %}
+                <form method="POST" action="{{ url_for('add_to_cart', product_id=product.id) }}">
+                    <input type="number" name="quantity" value="1" min="1" max="{{ product.quantity }}">
+                    <button type="submit">➕ Adauga in cos</button>
+                </form>
+                {% elif not session.username %}
+                    <p style="color: #999;">🔐 <a href="{{ url_for('login') }}">Autentifica-te</a> pentru a cumpara</p>
+                {% elif product.quantity == 0 %}
+                    <p style="color: #dc3545;">❌ Stoc epuizat</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

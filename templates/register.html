@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inregistrare</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="auth-form">
+            <h2>📝 Inregistrare</h2>
+            <form method="POST">
+                <input type="text" name="username" placeholder="Utilizator" required>
+                <input type="password" name="password" placeholder="Parola" required>
+                <select name="role">
+                    <option value="user">Utilizator normal</option>
+                    <option value="admin">Administrator</option>
+                </select>
+                <button type="submit">Creeaza cont</button>
+            </form>
+            <div class="links">
+                <p>Ai deja cont? <a href="{{ url_for('login') }}">Autentificare</a></p>
+                <p><a href="{{ url_for('index') }}">← Inapoi la magazin</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

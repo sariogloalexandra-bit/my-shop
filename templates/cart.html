@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cosul meu</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>🛍️ Cosul meu</h2>
+            <div class="user-info">
+                <span>👋 {{ session.username }}</span>
+                <a href="{{ url_for('index') }}">← Continua cumparaturile</a>
+                <a href="{{ url_for('logout') }}">🚪 Iesire</a>
+            </div>
+        </div>
+
+        {% if cart_items %}
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Produs</th>
+                    <th>Pret</th>
+                    <th>Cantitate</th>
+                    <th>Subtotal</th>
+                    <th>Actiuni</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.price }} lei</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.subtotal }} lei</td>
+                    <td><a href="{{ url_for('remove_from_cart', cart_id=item.id) }}" style="color: #dc3545;">❌ Sterge</a></td>
+                </tr>
+                {% endfor %}
+                <tr class="total-row">
+                    <td colspan="3"><strong>TOTAL:</strong></td>
+                    <td colspan="2"><strong>{{ total }} lei</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="cart-actions">
+            <a href="{{ url_for('index') }}" class="continue">➕ Continua cumparaturile</a>
+        </div>
+        {% else %}
+        <div class="empty-cart">
+            <h2>📦 Cosul tau este gol</h2>
+            <a href="{{ url_for('index') }}">Vezi produsele noastre</a>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
